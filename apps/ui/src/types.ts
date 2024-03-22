@@ -113,6 +113,8 @@ export type Space = {
     treasury: string | null;
     treasury_chain: number | null;
   }[];
+  verified?: boolean;
+  turbo?: boolean;
   proposal_count: number;
   vote_count: number;
   follower_count?: number;

@@ -37,6 +37,8 @@ export type ApiSpace = {
     minScore: number;
     onlyMembers: boolean;
   };
+  verified: boolean;
+  turbo: boolean;
   proposalsCount: number;
   votesCount: number;
   followersCount: number;

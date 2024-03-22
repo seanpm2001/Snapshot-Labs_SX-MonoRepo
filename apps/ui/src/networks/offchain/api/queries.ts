@@ -12,6 +12,8 @@ const SPACE_FRAGMENT = gql`
     twitter
     github
     symbol
+    verified
+    turbo
     treasuries {
       name
       network

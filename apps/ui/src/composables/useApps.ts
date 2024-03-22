@@ -1,7 +1,8 @@
 // URL: https://docs.google.com/spreadsheets/d/1R1qmDuKTp8WYiy-QWG0WQpu-pfoi-4TTUQKz1XdFZ1o
-const APPS_SHEET_ID =
+const SHEET_ID =
   '2PACX-1vSyMqd0Ql198UtPMWO1RQmnzx-rfggEIT3Yieg8mOSf8tyNksUSLKXMpBkO1DLC8yoLqx0stynSk1Us';
 const APPS_SHEET_GID = '0';
+const SERVICES_SHEET_GID = '1896965012';
 
 async function getSpreadsheet(id: string, gid: string = '0'): Promise<any[]> {
   const res = await fetch(
@@ -25,7 +26,9 @@ function csvToJson(csv: string): any[] {
 }
 
 const apps: Ref<any[]> = ref([]);
-const categories: Ref<string[]> = ref([]);
+const services: Ref<any[]> = ref([]);
+const appsCategories: Ref<string[]> = ref([]);
+const servicesCategories: Ref<string[]> = ref([]);
 const loading: Ref<boolean> = ref(false);
 const loaded: Ref<boolean> = ref(false);
 
@@ -35,19 +38,27 @@ export function useApps() {
 
     loading.value = true;
 
-    apps.value = await getSpreadsheet(APPS_SHEET_ID, APPS_SHEET_GID);
-    categories.value = [...new Set(apps.value.map(({ category }) => category))];
+    [apps.value, services.value] = await Promise.all([
+      getSpreadsheet(SHEET_ID, APPS_SHEET_GID),
+      getSpreadsheet(SHEET_ID, SERVICES_SHEET_GID)
+    ]);
+    appsCategories.value = [...new Set(apps.value.map(({ category }) => category))];
+    servicesCategories.value = [...new Set(services.value.map(({ category }) => category))];
 
     loading.value = false;
     loaded.value = true;
   }
 
-  function get(id: string) {
-    return apps.value.find(app => app.id === id) || {};
+  function get(id: string, type: 'app' | 'service') {
+    const item = type === 'app' ? apps.value : services.value;
+
+    return item.find(app => app.id === id) || {};
   }
 
-  function search(q: string) {
-    return apps.value.filter(app => {
+  function search(q: string, type: string) {
+    const items = type === 'apps' ? apps.value : services.value;
+
+    return items.filter(app => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { overview, ...appWithoutOverview } = app;
       return JSON.stringify(appWithoutOverview).toLowerCase().includes(q.toLowerCase());
@@ -56,7 +67,9 @@ export function useApps() {
 
   return {
     apps,
-    categories,
+    services,
+    appsCategories,
+    servicesCategories,
     loading,
     loaded,
     load,

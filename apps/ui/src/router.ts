@@ -8,6 +8,7 @@ import SpaceSettings from '@/views/Space/Settings.vue';
 import SpaceEditSettings from '@/views/Space/EditSettings.vue';
 import SpaceTreasury from '@/views/Space/Treasury.vue';
 import SpaceDelegates from '@/views/Space/Delegates.vue';
+import SpaceInsights from '@/views/Space/Insights.vue';
 import Editor from '@/views/Editor.vue';
 import Proposal from '@/views/Proposal.vue';
 import ProposalOverview from '@/views/Proposal/Overview.vue';
@@ -36,7 +37,8 @@ const routes: any[] = [
       { path: 'settings', name: 'space-settings', component: SpaceSettings },
       { path: 'edit-settings', name: 'space-edit-settings', component: SpaceEditSettings },
       { path: 'treasury', name: 'space-treasury', component: SpaceTreasury },
-      { path: 'delegates', name: 'space-delegates', component: SpaceDelegates }
+      { path: 'delegates', name: 'space-delegates', component: SpaceDelegates },
+      { path: 'insights', name: 'space-insights', component: SpaceInsights }
     ]
   },
   {
@@ -66,7 +68,9 @@ const routes: any[] = [
   },
   { path: '/explore', name: 'explore', component: Explore },
   { path: '/apps', name: 'apps', component: Apps },
-  { path: '/apps/:id', name: 'app', component: App }
+  { path: '/apps/:id', name: 'app', component: App },
+  { path: '/services', name: 'services', component: Apps },
+  { path: '/services/:id', name: 'service', component: App }
 ];
 
 const router = createRouter({
