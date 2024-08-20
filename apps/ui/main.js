@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require('electron');
+const todesktop = require("@todesktop/runtime");
 const path = require('path');
+
+todesktop.init();
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -13,18 +16,4 @@ function createWindow() {
   win.loadFile('dist/index.html');
 }
 
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+app.whenReady().then(createWindow);
